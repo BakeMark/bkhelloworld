@@ -1,0 +1,26 @@
+
+{% if has_pages %}
+<ul class="pagination">
+    {% if show_first %}
+    <li>
+        <a href="?page=1">&laquo;</a>
+    </li>
+    <li>
+        <a href="?page={{ prev_page }}">&lt;</a>
+    </li>
+    {% endif %}
+    {% for pg in pages %}
+    <li class="{{pg.class}}">
+        <a href="{{ pg.url }}">{{ pg.page }}</a>
+    </li>
+    {% endfor %}
+    {% if show_last %}
+    <li>
+        <a href="?page={{ next_page }}">&gt;</a>
+    </li>
+    <li>
+        <a href="?page={{ last_page }}">&raquo;</a>
+    </li>
+    {% endif %}
+</ul>
+{% endif %}

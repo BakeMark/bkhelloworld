@@ -1,0 +1,25 @@
+[program:${APPNAME}_web]
+directory=${DJANGODIR}
+command=${VENVDIR}/${APPNAME}/bin/gunicorn ${APPNAME}.wsgi -c ${BASEDIR}conf/${APPNAME}-gunicorn.conf
+user=${USERNAME}
+stdout_logfile=${BASEDIR}logs/gunicorn.log
+redirect_stderr=True
+
+[program:${APPNAME}_celery]
+command=${VENVDIR}/${APPNAME}/bin/celery -A ${APPNAME} worker -l info
+directory=${DJANGODIR}
+user=shipley
+stdout_logfile=${BASEDIR}logs/celery.log
+stderr_logfile=${BASEDIR}logs/celery.log
+redirect_stderr=True
+
+[program:${APPNAME}_beat]
+command=${VENVDIR}/${APPNAME}/bin/celery -A ${APPNAME} beat -l info
+directory=${DJANGODIR}
+user=shipley
+stdout_logfile=${BASEDIR}logs/beat.log
+stderr_logfile=${BASEDIR}logs/beat.log
+redirect_stderr=True
+
+[group:${APPNAME}Group]
+programs = ${APPNAME}_web,${APPNAME}_celery,${APPNAME}_beat

@@ -1,0 +1,53 @@
+upstream ${APPNAME}_server {
+    server unix:${BASEDIR}run/${APPNAME}.sock fail_timeout=0;
+}
+
+server {
+    listen 80;
+    server_name ${SERVERNAME};
+
+    # listen 443 ssl;
+    # ssl_certificate ${BASEDIR}conf/ssl/${SERVERNAME}.yyyymmdd.pem;
+    # ssl_certificate_key ${BASEDIR}conf/ssl/${SERVERNAME}.yyyymmdd.key;
+
+    client_max_body_size 4G;
+
+    access_log ${BASEDIR}logs/nginx-access.log;
+    error_log ${BASEDIR}logs/nginx-error.log;
+    
+    location /static/ {
+         alias ${BASEDIR}assets/static/;
+    }
+
+    location /media/ {
+         alias ${BASEDIR}assets/media/;
+    }
+
+    location / {
+         proxy_set_header X-Forwarded-For $$proxy_add_x_forwarded_for;
+         proxy_set_header Host $$http_host;
+         proxy_read_timeout 300;
+
+         proxy_redirect off;
+
+         if (!-f $$request_filename) {
+             proxy_pass http://${APPNAME}_server;
+             break;
+         }
+    }
+
+    error_page 500 502 503 504 /500.html;
+    location = /500.html {
+         root ${BASEDIR}assets/static/;
+    }
+
+}
+
+#server {
+#    listen 80;
+#    server_name ${SERVERNAME};
+#
+#    location / {
+#        rewrite ^ https://$$server_name\$$request_uri permanent;
+#    }
+#}

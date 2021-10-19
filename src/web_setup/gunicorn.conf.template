@@ -1,0 +1,9 @@
+backlog = 2048
+bind = "unix:${BASEDIR}run/${APPNAME}.sock"
+pid = "${BASEDIR}run/gunicorn-${APPNAME}.pid"
+daemon = False
+debug = False
+workers = 3
+logfile = "${BASEDIR}logs/gunicorn.log"
+loglevel = "info"
+
