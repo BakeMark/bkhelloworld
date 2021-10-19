@@ -4,3 +4,4 @@ mnt/*
 data/*
 **/db.sqlite3
 **/.env
+docker/*
