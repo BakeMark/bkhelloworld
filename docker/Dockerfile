@@ -20,6 +20,7 @@ RUN if [ -z "$apt_proxy" ]; then echo "apt_proxy not defined."; else echo "Acqui
 # they were clobbered by a parent image.
 RUN set -ex \
     && RUN_DEPS=" \
+    # git \
     libpcre3 \
     mime-support \
     default-libmysqlclient-dev \
@@ -45,15 +46,17 @@ RUN set -ex \
     build-essential \
     libpcre3-dev \
     libpq-dev \
+    git \
     " \
     && apt-get update && apt-get install -y --no-install-recommends $BUILD_DEPS \
     && pip install --no-cache-dir -r /requirements.txt \
+    && git clone --depth=1 https://github.com/BakeMark/bkhelloworld.git /code \
     \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $BUILD_DEPS \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy your application code to the container (make sure you create a .dockerignore file if any large files or directories should be excluded)
-RUN mkdir /code/
+# RUN mkdir /code/
 WORKDIR /code/
 ADD . /code/
 
