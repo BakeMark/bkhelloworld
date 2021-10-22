@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: bkhelloworld-django-service
+spec:
+  type: NodePort
+  selector:
+    app: bkhelloworld
+  ports:
+    - port: 8000
+      targetPort: 8000

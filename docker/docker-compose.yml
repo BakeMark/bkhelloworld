@@ -6,7 +6,8 @@ services:
       DJANGO_MANAGEPY_MIGRATE: "on"
       DATABASE_URL: "sqlite:////code/data/sqlite3.db"
     build: .
-    image: viannayl/bkhelloworld
+    image: allan0cuenca/bkhelloworld
+    # image: viannayl/bkhelloworld
     ports:
       - "8000:8000"
     volumes:

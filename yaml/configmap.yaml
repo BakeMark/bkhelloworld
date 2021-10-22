@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bkhelloworld-config
+data:
+  DEBUG: "True"
+  DJANGO_ADMINS: "Allan Cuenca:allan.cuenca@bakemark.com,Lou Viannay:lou.viannay@octavesolution.com"
+  SERVER_URL: "http://bkhelloworld.bake1.net"
+  SERVER_EMAIL: "django_bkhelloworld@bakemark.com"
+  EMAIL_ADMIN: "allan.cuenca@bakemark.com"
+  EMAIL_HOST: "bake1smtprelay.bake1.net"
+  EMAIL_USE_TLS: "False"
+  EMAIL_SENDER: "noreply-bkhelloworld@bakemark.com"
+  CELERY_BROKER_URL: "redis://localhost:6379/<replace_me>"

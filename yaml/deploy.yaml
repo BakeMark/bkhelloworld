@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bkhelloworld-app
+  labels:
+    app: bkhelloworld
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bkhelloworld
+  template:
+    metadata:
+      labels:
+        app: bkhelloworld
+    spec:
+      containers:
+        - image: allan0cuenca/bkhelloworld:latest
+          name: bkhelloworld
+          envFrom:
+          - secretRef:
+              name: bkhelloworld-secret
+          - configMapRef:
+              name: bkhelloworld-config
+          ports:
+            - containerPort: 8000
+              name: uwsgi
+          volumeMounts:
+            - mountPath: /code/data
+              name: azure-volume
+      imagePullSecrets:
+        - name: bkhelloworld-docker-secret
+      volumes:
+        - name: azure-volume
+          persistentVolumeClaim:
+            claimName: azure-managed-disk
