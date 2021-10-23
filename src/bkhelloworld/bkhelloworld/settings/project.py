@@ -62,3 +62,6 @@ STATICFILES_DIRS = [
     BASE_DIR.joinpath(Path('../static/').resolve())
 ]
 
+if DEBUG:
+    print("DATABASES = {}".format(DATABASES))
+
