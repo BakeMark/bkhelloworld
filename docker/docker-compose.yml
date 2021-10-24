@@ -11,4 +11,4 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./mnt/data:/code/data
+      - ./mnt/data:/code/data:rw

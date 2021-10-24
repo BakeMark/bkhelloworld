@@ -15,19 +15,31 @@ spec:
         app: bkhelloworld
     spec:
       containers:
-        - image: allan0cuenca/bkhelloworld:latest
+        - image: allan0cuenca/bkhelloworld
           name: bkhelloworld
           envFrom:
           - secretRef:
               name: bkhelloworld-secret
           - configMapRef:
               name: bkhelloworld-config
+          env:
+          - name: DJANGO_MANAGEPY_MIGRATE
+            value: "on"
+          - name: DATABASE_URL
+            value: "sqlite:////code/data/sqlite3.db"
           ports:
             - containerPort: 8000
               name: uwsgi
           volumeMounts:
             - mountPath: /code/data
               name: azure-volume
+      initContainers:
+      - name: sqlite3-data-permission-fix
+        image: busybox
+        command: ["/bin/chmod", "-R", "777", "/data"]
+        volumeMounts:
+        - name: azure-volume
+          mountPath: /data
       imagePullSecrets:
         - name: bkhelloworld-docker-secret
       volumes:

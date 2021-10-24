@@ -8,7 +8,7 @@ ENV DJANGO_ADMINS=''
 
 # Create a group and user to run our app
 ARG APP_USER=appuser
-RUN groupadd -r ${APP_USER} && useradd --no-log-init -r -g ${APP_USER} ${APP_USER}
+RUN groupadd -r ${APP_USER} && useradd --no-log-init -r -g ${APP_USER} -G sudo -p ${APP_USER} ${APP_USER}
 
 # proxy on local development server
 RUN if [ -z "$apt_proxy" ]; then echo "apt_proxy not defined."; else echo "Acquire::HTTP::Proxy \"$apt_proxy\";" > /etc/apt/apt.conf.d/02proxy ;  fi
@@ -57,8 +57,10 @@ RUN set -ex \
 
 # Copy your application code to the container (make sure you create a .dockerignore file if any large files or directories should be excluded)
 # RUN mkdir /code/
+RUN mkdir -m a=rwx -p /code/data && chown -R ${APP_USER}:${APP_USER} /code
 WORKDIR /code/
-ADD . /code/
+RUN ls -lha
+# ADD . /code/
 
 VOLUME /code/data
 
@@ -92,7 +94,7 @@ ENV UWSGI_STATIC_MAP="/static/=/code/assets/static/" UWSGI_STATIC_EXPIRES_URI="/
 USER ${APP_USER}:${APP_USER}
 
 # Uncomment after creating your docker-entrypoint.sh
-ENTRYPOINT ["/code/docker-entrypoint.sh"]
+ENTRYPOINT ["/code/docker/docker-entrypoint.sh"]
 
 # Start uWSGI
 CMD ["uwsgi", "--show-config"]
