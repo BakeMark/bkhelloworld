@@ -59,7 +59,7 @@ RUN set -ex \
 # RUN mkdir /code/
 RUN mkdir -m a=rwx -p /code/data && chown -R ${APP_USER}:${APP_USER} /code
 WORKDIR /code/
-RUN ls -lha
+# RUN ls -lha
 # ADD . /code/
 
 VOLUME /code/data

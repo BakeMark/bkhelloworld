@@ -1,7 +1,7 @@
 import environ
 
 from .django import *
-from .bootstrap import *
+# from .bootstrap import *
 
 # from .celery  import *
 from pathlib import Path
@@ -62,6 +62,5 @@ STATICFILES_DIRS = [
     BASE_DIR.joinpath(Path('../static/').resolve())
 ]
 
-if DEBUG:
-    print("DATABASES = {}".format(DATABASES))
-
+# if DEBUG:
+#     print("DATABASES = {}".format(DATABASES))
